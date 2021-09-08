@@ -1,5 +1,4 @@
-import React from 'react'
-
+import React from 'react';
 import {
   Box,
   Button,
@@ -14,13 +13,18 @@ import {
   StatHelpText,
   useDisclosure,
   useColorModeValue,
+  Collapse
 } from '@chakra-ui/react';
-import { Fade, ScaleFade, Slide, SlideFade, Collapse } from "@chakra-ui/react"
 
 export const Body = (props) => {
-
   const { isOpen, onToggle } = useDisclosure()
 
+  var today = new Date();
+  var dd = String(today.getDate()).padStart(2, '0');
+  var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
+  var yyyy = today.getFullYear();
+
+  today = dd + '/' + mm + '/' + yyyy;
 
   return (
     <Center mt={4} mb={6}>
@@ -50,9 +54,6 @@ export const Body = (props) => {
           <Text color={'gray.500'}>
             Seleccione una Criptomoneda para obtener su precio en pesos Argentinos.
           </Text>
-          <Text as="i" color={'gray.500'}>
-            Los Precios de los activos se encuentran actualizados al día de la fecha.
-          </Text>
         </Stack>
         <Stack mt={6} spacing={3}>
           <Select mb={1} size="lg">
@@ -64,7 +65,7 @@ export const Body = (props) => {
           <Stack>
             <Stat>
               <StatNumber>$ 182.23</StatNumber>
-              <StatHelpText as="i"><strong>fecha de cotización:</strong> 7/09/2021</StatHelpText>
+              <StatHelpText as="i"><strong>Fecha de cotización:</strong> {today}</StatHelpText>
             </Stat>
           </Stack>
         </Stack>

@@ -1,6 +1,5 @@
 import {
     Box,
-    Button,
     chakra,
     Container,
     Stack,
@@ -21,13 +20,15 @@ const SocialButton = ({
             rounded={'full'}
             w={8}
             h={8}
+            as="a"
             cursor={'pointer'}
-            as={'a'}
             href={href}
             display={'inline-flex'}
             alignItems={'center'}
             justifyContent={'center'}
             transition={'background 0.3s ease'}
+            rel="noopener noreferrer" 
+            target="_blank"
             _hover={{
                 bg: useColorModeValue('blackAlpha.200', 'whiteAlpha.200'),
             }}>

@@ -22,7 +22,6 @@ export const ColorModeSwitcher = (props) => {
       marginLeft="2"
       onClick={changeBoth}
       icon={<SwitchIcon />}
-      {...props}
     />
   );
 };
