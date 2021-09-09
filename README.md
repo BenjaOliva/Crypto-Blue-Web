@@ -28,7 +28,7 @@ Por lo pronto solo se listan las Criptomonedas con más renombre.
 
 ## Autor
 
-Desarrollador y Diseñador del proyecto
+Desarrollador y Diseñador del proyecto:
 
 Oliva Clariá, Benjamín  
 * Linkedin: [https://www.linkedin.com/in/benjamin-oliva-clariá-953454181](https://www.linkedin.com/in/benjamin-oliva-clariá-953454181)
@@ -51,6 +51,7 @@ Oliva Clariá, Benjamín
         * [Error Lens](https://marketplace.visualstudio.com/items?itemName=usernamehw.errorlens)
         * [Bookmarks](https://marketplace.visualstudio.com/items?itemName=alefragnani.Bookmarks)
         * Otras extensiones de formateo de codigo...
+* Node.js
 * Navegador Brave
 * GitHub Desktop App
 

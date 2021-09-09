@@ -55,19 +55,19 @@ const InfoModal = ({ openModal, setModal }) => {
                         <ModalItem
                             title='Que es Crypto Blue ?'
                             text='Crypto Blue es una herramienta Web que ayuda a sus usuarios a obtener un Precio
-                                estimado de un criptoactivo valuados segun los diferentes valores que toma el Dólar
+                                estimado de una criptodivisa valuadas segun los diferentes valores que toma el Dólar
                                 en Argentina, facilitando así el calculo al usuario final.'
                         />
                         <ModalItem
                             title='Los datos son oficiales ?'
-                            text='Los datos que utiliza Crypto Blue estan sujetos a variaciones. Como ambos activos
+                            text='Los datos que utiliza Crypto Blue están sujetos a variaciones. Como ambos activos
                                 (Criptomonedas y Dólar Paralelo) son mercados informales, sus valores pueden variar
                                 levemente dependiendo donde se busque.'
                         />
                         <ModalItem
                             title='De donde vienen las cotizaciones ?'
                             text='Las cotizaciones Provienen de 2 plataformas, 
-                                CoinGeko y DolarSi, a traves de sus API.'
+                                CoinGeko y DolarSi, a través de sus API.'
                         />
                     </Accordion>
                 </ModalBody>
