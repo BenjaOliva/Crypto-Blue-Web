@@ -40,10 +40,13 @@ export const Body = () => {
   const [dolarOficial, setDolarOficial] = useState()
   const [converOficial, setConveroficial] = useState()
   const [converBlue, setConverBlue] = useState()
+  const [crudValue, setCrudValue] = useState()
 
   const [selectedClient, setSelectedClient] = useState('bitcoin');
   const [dolarBlueCrud, setCrud] = useState()
   const [dolarOficialCrud, setCrudOficial] = useState()
+
+
   useEffect(() => {
     getDolar("blue")
       .then(res => {
@@ -64,11 +67,11 @@ export const Body = () => {
   }
 
   function calculateFunc() {
-    onToggle()
+    if(!isOpen) onToggle()
     getCrypto(selectedClient, "usd")
       .then(res => {
+        setCrudValue(formatter.format(res))
         setConveroficial(res * parseFloat(parseFloat(dolarOficialCrud.replace(',', '.')).toFixed(2)))
-        console.log(res);
         let numero = (res * parseFloat(parseFloat(dolarBlueCrud.replace(',', '.')).toFixed(2)))
         setConverBlue(formatter.format(numero))
       })
@@ -78,8 +81,8 @@ export const Body = () => {
   return (
     <Center mt={4} mb={6}>
       <Box
-        maxW={'195vh'}
-        w={'full'}
+        maxW={'92vw'}
+        w={'900px'}
         bg={useColorModeValue('white', 'gray.900')}
         boxShadow="dark-lg"
         rounded={'md'}
@@ -105,13 +108,12 @@ export const Body = () => {
           </Text>
         </Stack>
         <Stack mt={6} spacing={3}>
-          <Select mb={1} size="lg" onChange={handleSelectChange}>
+          <Select mb={1} size="lg" borderColor onChange={handleSelectChange}>
             <option value="bitcoin">Bitcoin</option>
             <option value="ethereum">Ethereum</option>
             <option value="litecoin">Litecoin</option>
             <option value="binancecoin">Binance Coin</option>
             <option value="dogecoin">DogeCoin</option>
-
           </Select>
           <Stack
             spacing="5"
@@ -130,7 +132,7 @@ export const Body = () => {
             </Stat>
           </Stack>
         </Stack>
-        <Button w="100%" colorScheme="blue" onClick={calculateFunc} mt={3} isDisabled={!dolarBlue}> Calcular!</Button>
+        <Button w="100%" colorScheme="blue" bg='cyan.600' onClick={calculateFunc} mt={3} isDisabled={!dolarBlue}> Calcular!</Button>
         <Collapse in={isOpen} animateOpacity>
           <Box
             p="40px"
@@ -155,6 +157,11 @@ export const Body = () => {
                 accentColor="green.500"
                 icon={<FaDollarSign />}
                 data={{ label: 'Conversión a Dólar Oficial', value: formatter.format(converOficial), change: 4.31 }}
+              />
+              <StatCard
+                accentColor="yellow.600"
+                icon={<FaDollarSign />}
+                data={{ label: 'Precio en Dólares', value: crudValue, change: 4.31 }}
               />
             </Stack>
           </Box>

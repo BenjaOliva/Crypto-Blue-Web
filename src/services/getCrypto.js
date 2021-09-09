@@ -6,13 +6,10 @@ export const getCrypto = (crypto, currency) => {
             switch (currency) {
                 case "ars":
                     return result.data.market_data.current_price.ars
-                    break;
                 case "usd":
                     return result.data.market_data.current_price.usd
-                    break;
                 default:
                     return result.data.market_data.current_price.usd
-                    break;
             }
         })
         .catch(err => { console.error(err) })
