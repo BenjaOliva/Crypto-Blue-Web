@@ -18,12 +18,31 @@ import {
     Divider
 } from '@chakra-ui/react';
 
+
+const ModalItem = ({ title, text }) => {
+
+    return (
+        <AccordionItem>
+            <AccordionButton>
+                <Box as="i" flex="1" textAlign="left">
+                    <strong>{title}</strong>
+                </Box>
+                <AccordionIcon />
+            </AccordionButton>
+            <AccordionPanel pb={4}>
+                {text}
+            </AccordionPanel>
+        </AccordionItem>
+    )
+}
+
 const InfoModal = ({ openModal, setModal }) => {
     return (
         <Modal
             isCentered
             onClose={() => { setModal(false) }}
             isOpen={openModal}
+            size={'2xl'}
             motionPreset="slideInBottom"
         >
             <ModalOverlay />
@@ -33,32 +52,23 @@ const InfoModal = ({ openModal, setModal }) => {
                 <ModalCloseButton />
                 <ModalBody>
                     <Accordion allowToggle>
-                        <AccordionItem>
-                            <AccordionButton>
-                                <Box as="i" flex="1" textAlign="left">
-                                    <strong>Que es Crypto Blue ?</strong>
-                                </Box>
-                                <AccordionIcon />
-                            </AccordionButton>
-                            <AccordionPanel pb={4}>
-                                Crypto Blue es una herramienta Web que ayuda a sus usuarios a obtener un Precio
-                                estimado de un criptoactivo valuados segun los diferentes valores que toma el Dólar 
-                                en Argentina, facilitando así el calculo al usuario final.
-                            </AccordionPanel>
-                        </AccordionItem>
-                        <AccordionItem>
-                            <AccordionButton>
-                                <Box as="i" flex="1" textAlign="left">
-                                <strong>Los datos son oficiales ?</strong>
-                                </Box>
-                                <AccordionIcon />
-                            </AccordionButton>
-                            <AccordionPanel pb={4}>
-                                Los datos que utiliza Crypto Blue estan sujetos a variaciones. Como ambos activos
+                        <ModalItem
+                            title='Que es Crypto Blue ?'
+                            text='Crypto Blue es una herramienta Web que ayuda a sus usuarios a obtener un Precio
+                                estimado de una criptodivisa valuadas segun los diferentes valores que toma el Dólar
+                                en Argentina, facilitando así el calculo al usuario final.'
+                        />
+                        <ModalItem
+                            title='Los datos son oficiales ?'
+                            text='Los datos que utiliza Crypto Blue están sujetos a variaciones. Como ambos activos
                                 (Criptomonedas y Dólar Paralelo) son mercados informales, sus valores pueden variar
-                                levemente dependiendo donde se busque.
-                            </AccordionPanel>
-                        </AccordionItem>
+                                levemente dependiendo donde se busque.'
+                        />
+                        <ModalItem
+                            title='De donde vienen las cotizaciones ?'
+                            text='Las cotizaciones Provienen de 2 plataformas, 
+                                CoinGeko y DolarSi, a través de sus API.'
+                        />
                     </Accordion>
                 </ModalBody>
                 <ModalFooter>
