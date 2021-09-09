@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   Box,
   Button,
@@ -8,23 +8,43 @@ import {
   Text,
   Stack,
   Stat,
-  StatLabel,
+  StackDivider,
   StatNumber,
+  Skeleton,
   StatHelpText,
   useDisclosure,
   useColorModeValue,
   Collapse
 } from '@chakra-ui/react';
 
-export const Body = (props) => {
+import { StatCard } from './StatCard';
+
+import {
+  FaDollarSign,
+} from "react-icons/fa";
+
+import { getDolar } from '../services/getDolar';
+
+var today = new Date();
+var dd = String(today.getDate()).padStart(2, '0');
+var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
+var yyyy = today.getFullYear();
+
+today = dd + '/' + mm + '/' + yyyy;
+
+export const Body = () => {
   const { isOpen, onToggle } = useDisclosure()
+  const [dolarBlue, setDolarBlue] = useState()
+  const [dolarOficial, setDolarOficial] = useState()
 
-  var today = new Date();
-  var dd = String(today.getDate()).padStart(2, '0');
-  var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
-  var yyyy = today.getFullYear();
+  useEffect(() => {
+    getDolar("blue")
+      .then(res => setDolarBlue(res))
 
-  today = dd + '/' + mm + '/' + yyyy;
+    getDolar()
+      .then(res => setDolarOficial(res))
+  }, [])
+
 
   return (
     <Center mt={4} mb={6}>
@@ -56,34 +76,56 @@ export const Body = (props) => {
           </Text>
         </Stack>
         <Stack mt={6} spacing={3}>
-          <Select mb={1} size="lg">
+          <Select mb={1} size="lg" onChange={() => { if (isOpen) onToggle() }}>
             <option value="BTC">Bitcoin</option>
             <option value="ETH">Ethereum</option>
+            <option value="LTC">Litecoin</option>
             <option value="BNB">Binance Coin</option>
           </Select>
-          <Text mb="8px">Precio Dólar Blue:</Text>
-          <Stack>
+          <Stack
+            spacing="5"
+            justify="space-between"
+            direction={{ base: 'column', md: 'row' }}
+            divider={<StackDivider />}>
             <Stat>
-              <StatNumber>$ 182.23</StatNumber>
+            <Text mb="8px">Precio Dólar Blue:</Text>
+              {dolarBlue ? <StatNumber>$ {dolarBlue}</StatNumber> : <Skeleton height="30px" />}
+              <StatHelpText as="i"><strong>Fecha de cotización:</strong> {today}</StatHelpText>
+            </Stat>
+            <Stat>
+            <Text mb="8px">Precio Dólar Oficial:</Text>
+              {dolarOficial ? <StatNumber>$ {dolarOficial}</StatNumber> : <Skeleton height="30px" />}
               <StatHelpText as="i"><strong>Fecha de cotización:</strong> {today}</StatHelpText>
             </Stat>
           </Stack>
         </Stack>
-        <Button w="100%" colorScheme="blue" onClick={onToggle} mt={3}> Calcular!</Button>
+        <Button w="100%" colorScheme="blue" onClick={onToggle} mt={3} isDisabled={!dolarBlue}> Calcular!</Button>
         <Collapse in={isOpen} animateOpacity>
           <Box
             p="40px"
             color="white"
             mt="4"
-            bg="teal.500"
-            rounded="md"
+            bg="teal.700"
+            rounded="lg"
             shadow="md"
           >
-            <Stat>
-              <StatLabel>Cantidad en Pesos Argentinos</StatLabel>
-              <StatNumber>$ 10.12</StatNumber>
-              <StatHelpText as="i">Las cantidades son estimativas, el precio puede variar segun donde se consiga la cotización del Dólar paralelo.</StatHelpText>
-            </Stat>
+            <Stack
+              spacing="8"
+              justify="space-between"
+              direction={{ base: 'column', md: 'row' }}
+              divider={<StackDivider />}
+            >
+              <StatCard
+                accentColor="blue.600"
+                icon={<FaDollarSign />}
+                data={{ label: 'Conversión a Dólar Blue', value: '5.000.000', change: -2.1 }}
+              />
+              <StatCard
+                accentColor="green.500"
+                icon={<FaDollarSign />}
+                data={{ label: 'Conversión a Dólar Oficial', value: '4.820.000', change: 4.31 }}
+              />
+            </Stack>
           </Box>
         </Collapse>
       </Box>
