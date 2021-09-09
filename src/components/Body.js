@@ -24,6 +24,8 @@ import {
 } from "react-icons/fa";
 
 import { getDolar } from '../services/getDolar';
+import { getCrypto } from '../services/getCrypto';
+import { formatter } from '../services/Formatter';
 
 var today = new Date();
 var dd = String(today.getDate()).padStart(2, '0');
@@ -36,15 +38,42 @@ export const Body = () => {
   const { isOpen, onToggle } = useDisclosure()
   const [dolarBlue, setDolarBlue] = useState()
   const [dolarOficial, setDolarOficial] = useState()
+  const [converOficial, setConveroficial] = useState()
+  const [converBlue, setConverBlue] = useState()
 
+  const [selectedClient, setSelectedClient] = useState('bitcoin');
+  const [dolarBlueCrud, setCrud] = useState()
+  const [dolarOficialCrud, setCrudOficial] = useState()
   useEffect(() => {
     getDolar("blue")
-      .then(res => setDolarBlue(res))
+      .then(res => {
+        setCrud(res)
+        setDolarBlue(formatter.format(parseFloat(parseFloat(res.replace(',', '.')).toFixed(2))))
+      })
 
     getDolar()
-      .then(res => setDolarOficial(res))
+      .then(res => {
+        setCrudOficial(res)
+        setDolarOficial(formatter.format(parseFloat(parseFloat(res.replace(',', '.')).toFixed(2))))
+      })
   }, [])
 
+  function handleSelectChange(event) {
+    setSelectedClient(event.target.value)
+    if (isOpen) { onToggle() }
+  }
+
+  function calculateFunc() {
+    onToggle()
+    getCrypto(selectedClient, "usd")
+      .then(res => {
+        setConveroficial(res * parseFloat(parseFloat(dolarOficialCrud.replace(',', '.')).toFixed(2)))
+        console.log(res);
+        let numero = (res * parseFloat(parseFloat(dolarBlueCrud.replace(',', '.')).toFixed(2)))
+        setConverBlue(formatter.format(numero))
+      })
+
+  }
 
   return (
     <Center mt={4} mb={6}>
@@ -76,11 +105,13 @@ export const Body = () => {
           </Text>
         </Stack>
         <Stack mt={6} spacing={3}>
-          <Select mb={1} size="lg" onChange={() => { if (isOpen) onToggle() }}>
-            <option value="BTC">Bitcoin</option>
-            <option value="ETH">Ethereum</option>
-            <option value="LTC">Litecoin</option>
-            <option value="BNB">Binance Coin</option>
+          <Select mb={1} size="lg" onChange={handleSelectChange}>
+            <option value="bitcoin">Bitcoin</option>
+            <option value="ethereum">Ethereum</option>
+            <option value="litecoin">Litecoin</option>
+            <option value="binancecoin">Binance Coin</option>
+            <option value="dogecoin">DogeCoin</option>
+
           </Select>
           <Stack
             spacing="5"
@@ -88,18 +119,18 @@ export const Body = () => {
             direction={{ base: 'column', md: 'row' }}
             divider={<StackDivider />}>
             <Stat>
-            <Text mb="8px">Precio Dólar Blue:</Text>
-              {dolarBlue ? <StatNumber>$ {dolarBlue}</StatNumber> : <Skeleton height="30px" />}
+              <Text mb="8px">Precio Dólar Blue:</Text>
+              {dolarBlue ? <StatNumber>{dolarBlue}</StatNumber> : <Skeleton height="30px" />}
               <StatHelpText as="i"><strong>Fecha de cotización:</strong> {today}</StatHelpText>
             </Stat>
             <Stat>
-            <Text mb="8px">Precio Dólar Oficial:</Text>
-              {dolarOficial ? <StatNumber>$ {dolarOficial}</StatNumber> : <Skeleton height="30px" />}
+              <Text mb="8px">Precio Dólar Oficial:</Text>
+              {dolarOficial ? <StatNumber>{dolarOficial}</StatNumber> : <Skeleton height="30px" />}
               <StatHelpText as="i"><strong>Fecha de cotización:</strong> {today}</StatHelpText>
             </Stat>
           </Stack>
         </Stack>
-        <Button w="100%" colorScheme="blue" onClick={onToggle} mt={3} isDisabled={!dolarBlue}> Calcular!</Button>
+        <Button w="100%" colorScheme="blue" onClick={calculateFunc} mt={3} isDisabled={!dolarBlue}> Calcular!</Button>
         <Collapse in={isOpen} animateOpacity>
           <Box
             p="40px"
@@ -118,12 +149,12 @@ export const Body = () => {
               <StatCard
                 accentColor="blue.600"
                 icon={<FaDollarSign />}
-                data={{ label: 'Conversión a Dólar Blue', value: '5.000.000', change: -2.1 }}
+                data={{ label: 'Conversión a Dólar Blue', value: converBlue, change: -2.1 }}
               />
               <StatCard
                 accentColor="green.500"
                 icon={<FaDollarSign />}
-                data={{ label: 'Conversión a Dólar Oficial', value: '4.820.000', change: 4.31 }}
+                data={{ label: 'Conversión a Dólar Oficial', value: formatter.format(converOficial), change: 4.31 }}
               />
             </Stack>
           </Box>
