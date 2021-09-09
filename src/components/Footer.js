@@ -56,7 +56,7 @@ const SocialButton = ({
 };
 
 function ClipboardShare() {
-    const [value, setValue] = useState("https://crypto-blue.vercel.app/")
+    const [value] = useState("https://crypto-blue.vercel.app/")
     const { hasCopied, onCopy } = useClipboard(value)
   
     return (
