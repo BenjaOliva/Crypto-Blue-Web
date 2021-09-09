@@ -1,5 +1,8 @@
 import {
     Box,
+    Flex,
+    Divider,
+    Input,
     Image,
     Button,
     chakra,
@@ -15,8 +18,12 @@ import {
     ModalFooter,
     ModalHeader,
     ModalCloseButton,
-    useDisclosure
+    useDisclosure,
+    useClipboard
 } from '@chakra-ui/react';
+
+import { useState } from "react";
+
 import { FaInstagram, FaLinkedin, FaWhatsapp, FaEnvelope, FaQrcode } from 'react-icons/fa';
 
 const SocialButton = ({
@@ -48,6 +55,22 @@ const SocialButton = ({
     );
 };
 
+function ClipboardShare() {
+    const [value, setValue] = useState("https://crypto-blue.vercel.app/")
+    const { hasCopied, onCopy } = useClipboard(value)
+  
+    return (
+      <center>
+        <Flex mb={2} w={'80%'}>
+          <Input value={value} isReadOnly placeholder="https://crypto-blue.vercel.app/" />
+          <Button onClick={onCopy} ml={2} colorScheme={hasCopied ? 'yellow' : "blue"}>
+            {hasCopied ? "Copiado!" : "Copiar"}
+          </Button>
+        </Flex>
+      </center>
+    )
+  }
+
 const QrModal = () => {
     const { isOpen, onOpen, onClose } = useDisclosure()
     return (
@@ -62,6 +85,9 @@ const QrModal = () => {
                     <ModalBody>
                         <Image src={require("../assets/QrCode.png").default} />
                     </ModalBody>
+                    <Divider mb={6} mt={4} />
+                    <ClipboardShare />
+                    <Divider mb={4} mt={4} />
                     <ModalFooter>
                         <Button colorScheme="blue" mr={3} onClick={onClose}>
                             Cerrar
